@@ -10,7 +10,7 @@ export default new VueRouter({
   routes: [
   	{
   		path: '/',
-  		component: Hello
+  		component: Login
   	},{
       	path: '/Hello',
       	component: Hello
@@ -20,6 +20,9 @@ export default new VueRouter({
     },{
     	path: '/TodoList',
     	component: TodoList
+    },{
+    	path: '*',
+      	redirect: '/' 
     }
   ]
 })

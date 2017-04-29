@@ -6,14 +6,10 @@
 </template>
 
 <script>
-import Hello from './components/Hello' // 
-import Login from './components/Login.vue' // 引入Login组件
+
 
 export default {
   name: 'app',
-  components: {
-    Login
-  }
 }
 </script>
 

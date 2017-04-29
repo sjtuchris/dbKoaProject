@@ -13,10 +13,11 @@
         <el-input 
           v-model="password" 
           placeholder="Password"
-          type="password">
+          type="password"
+          @keyup.enter.native="loginToDo">
         </el-input>
-        <el-button type="primary">Sign in</el-button>
-        <el-button type="primary">Register</el-button>
+        <el-button type="primary" @click="loginToDo">Sign in</el-button>
+        <el-button type="primary" @click="loginToDo">Register</el-button>
 
       </el-row>
     </el-col>
@@ -30,6 +31,11 @@ export default {
       account: '',
       password: ''
     };
+  },
+  methods: {
+    loginToDo(){
+      this.$router.push('/todolist')
+    }
   }
 };
 </script>

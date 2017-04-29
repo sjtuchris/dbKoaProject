@@ -10,11 +10,16 @@ Vue.use(ElementUI) // Vue全局使用
 const router = VueRouter
 
 var app = new Vue({
-  el: '#app',
   router: router,
-  template: '<App/>',
-  components: { App }
-})
+  render: h => h(App) 
+}).$mount('#app')
+
+// new Vue({
+//   el: '#app',
+//   router: router,
+//   template: '<App/>',
+//   components: { App }
+// })
 
 /* eslint-disable no-new */
 // 这灵活得亮瞎了

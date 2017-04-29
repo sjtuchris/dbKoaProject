@@ -1,7 +1,8 @@
 const Koa = require('koa')
   , koa = require('koa-router')()
   , json = require('koa-json')
-  , logger = require('koa-logger');	// 引入各种依赖
+  , logger = require('koa-logger')
+  , auth = require('./server/routes/auth.js');	// 引入各种依赖
 
 const app = new Koa();
 
@@ -19,6 +20,9 @@ app.use(async (ctx, next)=>{
 app.on('error', function(err, ctx){
   console.log('server error', err);
 });
+
+koa.use('/auth', auth.routes());
+app.use(koa.routes());
 
 app.listen(8889,() => {
   console.log('Koa is listening in 8889');
