@@ -1,15 +1,25 @@
 import Vue from 'vue'
-import Router from 'vue-router'
-import Hello from '@/components/Hello'
+import VueRouter from 'vue-router'
+import Hello from '../components/Hello'
+import Login from '../components/Login'
+import TodoList from '../components/TodoList'
 
-Vue.use(Router)
+Vue.use(VueRouter)
 
-export default new Router({
+export default new VueRouter({
   routes: [
-    {
-      path: '/',
-      name: 'Hello',
-      component: Hello
+  	{
+  		path: '/',
+  		component: Hello
+  	},{
+      	path: '/Hello',
+      	component: Hello
+    },{
+    	path: '/Login',
+    	component: Login
+    },{
+    	path: '/TodoList',
+    	component: TodoList
     }
   ]
 })
