@@ -15,6 +15,17 @@ const getUserById = async function (id){ // 注意是function* 而不是function
   return userInfo // 返回数据
 }
 
+const getUserByName = async function (name){
+  const userInfo = await User.findOne({
+    where: {
+      uname: name
+    }
+  })
+
+  return userInfo
+}
+
 module.exports = {
-  getUserById  // 导出getUserById的方法，将会在controller里调用
+  getUserById,
+  getUserByName
 }

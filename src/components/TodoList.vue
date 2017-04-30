@@ -2,7 +2,7 @@
   <el-row class="content">
     <el-col :xs="{span:20,offset:2}" :sm="{span:8,offset:8}">
       <span>
-        欢迎：{{name}}！你的待办事项是：
+        Welcome：{{name}}！你的待办事项是：
       </span>
       <el-input placeholder="请输入待办事项" v-model="todos" @keyup.enter.native="addTodos"></el-input>
       <el-tabs v-model="activeName">
@@ -49,14 +49,28 @@
 </template>
 
 <script>
+// import jwt from 'jsonwebtoken'
+
 export default {
+  created(){ // 组件创建时调用
+    const userInfo = this.getUserInfo(); // 新增一个获取用户信息的方法
+    if(userInfo != null){
+      // this.id = userInfo.uid;
+
+      this.name = userInfo;
+    }else{
+      this.id = '';
+      this.name = ''
+    }
+  },
   data () {
     return {
-      name: 'Molunerfinn',
+      name: '', // 用户名改为空
       todos: '',
       activeName: 'first',
       list:[],
-      count: 0
+      count: 0,
+      id: '' // 新增用户id属性，用于区别用户
     };
   },
   computed: { // 计算属性用于计算是否已经完成了所有任务
@@ -106,6 +120,17 @@ export default {
         type: 'info',
         message: '任务还原'
       })
+    },
+    getUserInfo(){ // 获取用户信息
+      const temp = sessionStorage.getItem('name');
+      console.log(temp)
+
+      if(temp != null && temp != 'null'){
+        // let decode = jwt.verify(token,'vue-koa-demo'); // 解析token
+        return temp // decode解析出来实际上就是{name: XXX,id: XXX}
+      }else {
+        return null
+      }
     }
   }
 };

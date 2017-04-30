@@ -33,8 +33,34 @@ export default {
     };
   },
   methods: {
-    loginToDo(){
-      this.$router.push('/todolist')
+    loginToDo() {
+      let obj = {
+        uname: this.account,
+        upassword: this.password
+      }
+      this.$http.post('/auth/user', obj) // 将信息发送给后端
+        .then((res) => {
+          console.log(res);
+          if(res.data.success){ // 如果成功
+            sessionStorage.setItem('demo-token',res.data.token);
+            sessionStorage.setItem('name',res.data.name); // 用sessionStorage把token存下来
+
+            this.$message({ // 登录成功，显示提示语
+              type: 'success',
+              message: 'Login successfully！'
+            });
+            this.$router.push('/todolist') // 进入todolist页面，登录成功
+          }else{
+            this.$message.error(res.data.info); // 登录失败，显示提示语
+            sessionStorage.setItem('demo-token',null); // 将token清空
+            sessionStorage.setItem('name',null); // 将token清空
+          }
+        }, (err) => {
+            this.$message.error('Oops, try again later！')
+            sessionStorage.setItem('demo-token',null); // 将token清空
+            sessionStorage.setItem('name',null); // 将token清空
+
+        })
     }
   }
 };
