@@ -2,7 +2,8 @@ const Koa = require('koa')
   , koa = require('koa-router')()
   , json = require('koa-json')
   , logger = require('koa-logger')
-  , auth = require('./server/routes/auth.js');	// 引入各种依赖
+  , auth = require('./server/routes/auth.js')
+  , api = require('./server/routes/api.js');	// 引入各种依赖
 
 const app = new Koa();
 
@@ -22,6 +23,8 @@ app.on('error', function(err, ctx){
 });
 
 koa.use('/auth', auth.routes());
+koa.use('/api', api.routes());
+
 app.use(koa.routes());
 
 app.listen(8889,() => {

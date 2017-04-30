@@ -55,9 +55,9 @@ export default {
   created(){ // 组件创建时调用
     const userInfo = this.getUserInfo(); // 新增一个获取用户信息的方法
     if(userInfo != null){
-      // this.id = userInfo.uid;
+      this.id = userInfo.id;
 
-      this.name = userInfo;
+      this.name = userInfo.name;
     }else{
       this.id = '';
       this.name = ''
@@ -90,44 +90,71 @@ export default {
   },
 
   methods: {
-    addTodos() {
+   addTodos() {
       if(this.todos == '')
         return
       let obj = {
-        status: false,
-        content: this.todos
+        content: this.todos,
+        id: this.id
       }
-      this.list.push(obj);
+      this.$http.post('/api/todolist', obj)
+        .then((res) => {
+          if(res.status == 200){
+            this.$message({
+              type: 'success',
+              message: '创建成功！'
+            })
+            this.getTodolist();
+          }else{
+            this.$message.error('创建失败！')
+          }
+        }, (err) => {
+          this.$message.error('创建失败！')
+          console.log(err)
+        })
       this.todos = '';
     },
-    finished(index) {
-      this.$set(this.list[index],'status',true) // 通过set的方法让数组的变动能够让Vue检测到
-      this.$message({
-        type: 'success',
-        message: '任务完成'
-      })
+    update(index) {
+      this.$http.put('/api/todolist/'+ this.id + '/' + this.list[index].id + '/' + this.list[index].status)
+        .then((res) => {
+          if(res.status == 200){
+            this.$message({
+              type: 'success',
+              message: '任务状态更新成功！'
+            })
+            this.getTodolist();
+          }else{
+            this.$message.error('任务状态更新失败！')
+          }
+        }, (err) => {
+          this.$message.error('任务状态更新失败！')
+          console.log(err)
+        })
     },
     remove(index) {
-      this.list.splice(index,1);
-      this.$message({
-        type: 'info',
-        message: '任务删除'
-      })
-    },
-    restore(index) {
-      this.$set(this.list[index],'status',false)
-      this.$message({
-        type: 'info',
-        message: '任务还原'
-      })
+      this.$http.delete('/api/todolist/'+ this.id + '/' + this.list[index].id)
+        .then((res) => {
+          if(res.status == 200){
+            this.$message({
+              type: 'success',
+              message: '任务删除成功！'
+            })
+            this.getTodolist();
+          }else{
+            this.$message.error('任务删除失败！')
+          }
+        }, (err) => {
+          this.$message.error('任务删除失败！')
+          console.log(err)
+        })
     },
     getUserInfo(){ // 获取用户信息
-      const temp = sessionStorage.getItem('name');
-      console.log(temp)
+      const name = sessionStorage.getItem('name');
+      const id = sessionStorage.getItem('id');
 
-      if(temp != null && temp != 'null'){
+      if(name != null && name != 'null'){
         // let decode = jwt.verify(token,'vue-koa-demo'); // 解析token
-        return temp // decode解析出来实际上就是{name: XXX,id: XXX}
+        return {name: name,id: id} // decode解析出来实际上就是{name: XXX,id: XXX}
       }else {
         return null
       }
