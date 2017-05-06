@@ -28,9 +28,16 @@ const modifyUserInfo = async function(ctx) {
   };
 }
 
-const userAllMessage = async function(ctx) {
+const userAllSentMessage = async function(ctx) {
   const uid = ctx.request.body.uid;
-  const messages = await message.getUserMessage(uid);
+  const messages = await message.getUserSentMessage(uid);
+  console.log(messages);
+  ctx.body = messages;
+}
+
+const userAllReceivedMessage = async function(ctx) {
+  const uid = ctx.request.body.uid;
+  const messages = await message.getUserReceivedMessage(uid);
   console.log(messages);
   ctx.body = messages;
 }
@@ -64,6 +71,7 @@ const sendMessage = async function(ctx) {
 module.exports = (router) => {
 	router.post('/user/info', getUserInfo),
 	router.post('/user/update', modifyUserInfo),
-  router.post('/user/messages', userAllMessage),
+  router.post('/user/sentMessages', userAllSentMessage),
+  router.post('/user/receivedMessages', userAllReceivedMessage),
   router.post('/user/sendMessage', sendMessage)
 };
