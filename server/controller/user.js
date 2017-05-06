@@ -69,8 +69,8 @@ const sendMessage = async function(ctx) {
 }
 
 module.exports = (router) => {
-	router.post('/user/info', getUserInfo),
-	router.post('/user/update', modifyUserInfo),
+  router.post('/user/info', getUserInfo),
+  router.post('/user/update', modifyUserInfo),
   router.post('/user/sentMessages', userAllSentMessage),
   router.post('/user/receivedMessages', userAllReceivedMessage),
   router.post('/user/sendMessage', sendMessage)
