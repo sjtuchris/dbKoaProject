@@ -3,7 +3,7 @@ const db = require('../config/db.js'),
 const testDb = db.connectDB; // 引入数据库
 const Message = testDb.import(messageModel); // 用sequelize的import方法引入表结构，实例化了User。
 
-const getUserMessage = async function(uid) {
+const getUserSentMessage = async function(uid) {
 	const userMessages = await Message.findAll({
 		where : {
 			uid: uid
