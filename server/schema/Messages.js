@@ -11,6 +11,14 @@ module.exports = function(sequelize, DataTypes) {
         key: 'uid'
       }
     },
+    toid: {
+      type: DataTypes.INTEGER(11),
+      allowNull: false,
+      references: {
+        model: 'Customers',
+        key: 'uid'
+      }
+    },
     mcontent: {
       type: DataTypes.STRING(1000),
       allowNull: false
