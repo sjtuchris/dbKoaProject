@@ -2,12 +2,14 @@ import Vue from 'vue'
 import VueRouter from './router/index'
 import App from './App'
 import ElementUI from 'element-ui' // 引入element-ui, 前端框架
+import locale from 'element-ui/lib/locale/lang/en'
 import 'element-ui/lib/theme-default/index.css'
 import Axios from 'axios'
 
 Vue.prototype.$http = Axios // 类似于vue-resource的调用方法
 
-Vue.use(ElementUI) // Vue全局使用
+Vue.use(ElementUI, { locale })
+// Vue.use(ElementUI)
 
 const router = VueRouter
 

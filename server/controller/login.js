@@ -50,7 +50,8 @@ const postUserAuth = async function(ctx) {
       ctx.body = {
         success: true,
         token: token,
-        name: userInfo.uname, // 返回token
+        name: userInfo.uname,
+        id: userInfo.uid, // 返回token
       }
 
     }

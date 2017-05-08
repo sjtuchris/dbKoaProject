@@ -42,7 +42,7 @@ export default {
       }
       this.$http.post('/auth/login', obj) // 将信息发送给后端
         .then((res) => {
-          console.log(res);
+          console.log(res.data);
           if(res.data.success){ // 如果成功
             sessionStorage.setItem('demo-token',res.data.token);
             sessionStorage.setItem('name',res.data.name);
