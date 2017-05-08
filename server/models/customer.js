@@ -14,6 +14,15 @@ const User = testDb.import(userModel); // 用sequelize的import方法引入表�
   return userInfo // 返回数据
 }*/
 
+const loginUserByName = async function (data){
+  const userInfo = await User.findOne({
+    where: {
+      uname: data.uname
+    }
+  })
+  return userInfo
+}
+
 const getUserByName = async function (data){
   const userInfo = await User.findOne({
     where: {
@@ -48,6 +57,7 @@ const updateUserInfo = async function (uname, updateData) {
 
 module.exports = {
   //getUserById,
+  loginUserByName,
   getUserByName,
   createNewUser,
   updateUserInfo

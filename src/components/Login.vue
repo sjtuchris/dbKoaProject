@@ -53,7 +53,7 @@ export default {
               type: 'success',
               message: 'Login successfully！'
             });
-            this.$router.push('/test') // 进入todolist页面，登录成功
+            this.$router.push('/projectview') // 进入todolist页面，登录成功
           }else{
             this.$message.error(res.data.info); // 登录失败，显示提示语
             sessionStorage.setItem('demo-token',null); // 将token清空

@@ -37,7 +37,22 @@
 				      </el-form-item>
 				    </el-col>
 				  </el-form-item>
-				  
+
+				  <el-form-item label="Expected Release Time" required>
+            <el-col :span="11">
+              <el-form-item prop="">
+                <el-date-picker type="date" placeholder="Choose Date"  style="width: 100%;"></el-date-picker>
+              </el-form-item>
+            </el-col>
+            <el-col class="line" :span="2">-</el-col>
+            <el-col :span="11">
+              <el-form-item prop="">
+                <el-time-picker type="fixed-time" placeholder="Choose time" style="width: 100%;"></el-time-picker>
+              </el-form-item>
+            </el-col>
+          </el-form-item>
+
+
 				  <el-form-item label="Tag" prop="type">
 				    <el-checkbox-group v-model="ruleForm.type">
 				     	<el-checkbox label="Art" name="type"></el-checkbox>

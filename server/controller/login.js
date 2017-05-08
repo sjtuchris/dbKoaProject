@@ -32,9 +32,12 @@ const signUp = async function(ctx) {
 
 const postUserAuth = async function(ctx) {
   const data = ctx.request.body; // post过来的数据存在request.body里
-  const userInfo = await user.getUserByName(data.uname);
-  console.log(ctx.request)
+  const userInfo = await user.loginUserByName(data);
+  // console.log(ctx.request)
   if(userInfo != null){ // 如果查无此用户会返回null
+      console.log(userInfo)
+  console.log(data)
+
     if(data.upassword != userInfo.upassword){
       ctx.body = {
         success: false, // success标志位是方便前端判断返回是正确与否

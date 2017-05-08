@@ -2,19 +2,20 @@
   <div>
     <nav-bar></nav-bar>
     <el-carousel :interval="4000" type="card" height="200px">
-      <el-carousel-item v-for="item in 6" :key="item">
-        <h3><img src="../assets/cat.png" width="10%"></h3>
+      <el-carousel-item v-for="item in 5" :key="item">
+        <h3><img :src="projectgroup[item].ppic" width="20%"></h3>
       </el-carousel-item>
     </el-carousel>
     <el-row class="cardgroup" :gutter="24">
       <el-col :span="20">
-        <el-col class="card" :span="5" v-for="(o, index) in 9" :key="o" :offset="index > 0 ? 1 : 1">
+        <el-col class="card" :span="5" v-for="(pro, index) in projectgroup" :key="pro" :offset="index > 0 ? 1 : 1">
+        
           <el-card :body-style="{ padding: '10px' }">
-            <img src="../assets/logo.png" class="image">
+            <img :src="pro.ppic" class="image">
             <div style="padding: 14px;">
-              <span>ProjecDemo</span>
+              <span>{{pro.pname}}</span>
               <div class="bottom clearfix">
-                <time class="time">{{ currentDate }}</time>
+                <time class="time">{{ pro.postime }}</time>
                 <el-button type="text" class="button">Detail</el-button>
               </div>
             </div>
@@ -34,15 +35,46 @@ import SideBar       from '../common/side-bar'
 export default {
   name: 'Project-view',
   created(){ // 组件创建时调用
-  
+    let obj = {};
+    const proGroup = this.getProjectGroup(obj); // 新增一个获取project的方法
+    if(proGroup != null){
+      this.projectgroup = proGroup;
+      console.log(this.projectgroup)
+    }else{
+      this.projectgroup = [];
+    }
   },
   data () {
     return {
-      currentDate: new Date()
+      currentDate: new Date(),
+      projectgroup: []
 
     }
   },
   methods: {
+      getProjectGroup(obj){ // 获取用户信息
+        this.$http.post('/api/project/getProjects', obj) // 将信息发送给后端
+          .then((res) => {
+            console.log(res.data);
+            this.projectgroup=res.data
+            // if(res.data.success){ // 如果成功
+                
+            //     this.$message({ // 登录成功，显示提示语
+            //       type: 'success',
+            //       message: 'Posted successfully！'
+            //     });
+            //     alert('submit!');
+
+            //     this.$router.push('/projectview') 
+            // }else{
+            //     this.$message.error(res.data.info); // 
+            //   }
+            }, (err) => {
+                this.$message.error('Oops, try again later！')
+
+        })
+      },
+
       handleOpen(key, keyPath) {
         console.log(key, keyPath);
       },

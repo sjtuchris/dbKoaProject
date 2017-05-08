@@ -20,7 +20,7 @@
 				<el-col :xs="6" :sm="4" :md="12" :lg="4">
 					<el-menu-item index="3"><router-link to="/login">Manage</router-link></el-menu-item>
 				</el-col>
-				<el-col :xs="6" :sm="6" :md="12" :lg="8">
+				<el-col :xs="6" :sm="6" :md="12" :lg="7" class="searchbar">
 					<el-menu-item index="3">
 						<el-input
 						  placeholder="Search..."
@@ -30,7 +30,7 @@
 						</el-input>
 					</el-menu-item>
 				</el-col>
-				<el-col :xs="4" :sm="2" :md="2" :lg="1">
+				<el-col :xs="4" :sm="2" :md="2" :lg="2">
 					<el-menu-item index="4">
 						<router-link to="/userfile">
 						<img class="img-circle" :src="picurl" width="60px" height="50px" alt="logo">
@@ -40,9 +40,9 @@
 				<el-col :xs="4" :sm="4" :md="2" :lg="2">
 					<el-submenu index="5">
 						<template slot="title">{{name}}</template>
-							<el-menu-item index="2-1">1</el-menu-item>
-							<el-menu-item index="2-2">2</el-menu-item>
-							<el-menu-item index="2-3" @click="logout">Log out</el-menu-item>
+						<el-menu-item index="2-1">1</el-menu-item>
+						<el-menu-item index="2-2">2</el-menu-item>
+						<el-menu-item index="2-3" @click="logout">Log out</el-menu-item>
 
 					</el-submenu>
 				</el-col>
@@ -165,6 +165,9 @@ export default {
 			&.finished
 				text-decoration line-through
 				color #ddd
+	.searchbar{
+		margin-right: 0%
+	}
 	.pull-right
 		float right
 	.img-circle {  

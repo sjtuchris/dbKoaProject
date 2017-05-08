@@ -40,7 +40,7 @@ export default new VueRouter({
       path: '/ProjectView',
       component: ProjectView
     },{
-      path: '/ProjectDetail',
+      path: '/ProjectDetail/:pid',
       component: ProjectDetail      
     },{
       path: '/PostProject',
