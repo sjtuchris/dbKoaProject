@@ -1,11 +1,12 @@
 <template>
+	<div>
 	<el-row class="content">
 
 		<el-menu theme="dark" :default-active="activeIndex" class="el-menu-demo" mode="horizontal" @select="handleSelect">
 			<el-row :gutter="20">
 				<el-col :xs="4" :sm="4" :md="4" :lg="4">
 					<el-menu-item index="1">
-						<a href="login">ProjectX</a>
+						<a href="#/test">ProjectX</a>
 					</el-menu-item>
 				</el-col>
 				<el-col :xs="4" :sm="4" :md="4" :lg="4">
@@ -16,10 +17,10 @@
 						<el-menu-item index="2-3">3</el-menu-item>
 					</el-submenu>
 				</el-col>
-				<el-col :xs="6" :sm="4" :md="12" :lg="12">
+				<el-col :xs="6" :sm="4" :md="12" :lg="4">
 					<el-menu-item index="3"><router-link to="/login">Manage</router-link></el-menu-item>
 				</el-col>
-				<el-col :xs="6" :sm="6" :md="12" :lg="12">
+				<el-col :xs="6" :sm="6" :md="12" :lg="8">
 					<el-menu-item index="3">
 						<el-input
 						  placeholder="Search..."
@@ -29,9 +30,9 @@
 						</el-input>
 					</el-menu-item>
 				</el-col>
-				<el-col :xs="4" :sm="2" :md="2" :lg="2">
+				<el-col :xs="4" :sm="2" :md="2" :lg="1">
 					<el-menu-item index="4">
-						<img class="img-circle" src="../assets/avatar.png" width="70px" height="50px" alt="logo">
+						<router-link to="/userfile"><img class="img-circle" src="../assets/album.jpg" width="60px" height="50px" alt="logo"></router-link>
 					</el-menu-item>
 				</el-col>
 				<el-col :xs="4" :sm="4" :md="2" :lg="2">
@@ -48,18 +49,18 @@
 				<el-col :span="16"></el-col> -->
 				
 				
-				
 			</el-row>
 		</el-menu>
 
 	</el-row>
+	</div>
 </template>
 
 <script>
 // import jwt from 'jsonwebtoken'
 import router from '../router/index'
-
 export default {
+	name: 'nav-bar',
 	created(){ // 组件创建时调用
 		const userInfo = this.getUserInfo(); // 新增一个获取用户信息的方法
 		if(userInfo != null){
@@ -106,6 +107,17 @@ export default {
 				console.log(key, keyPath);
 			},
 			getUserInfo(){ // 获取用户信息
+				let nameobj={uname: sessionStorage.getItem('name')}
+						              console.log(nameobj);
+
+	            this.$http.post('/api/user/info', nameobj) // 将信息发送给后端
+		            .then((res) => {
+		              console.log(res);
+		              sessionStorage.setItem('email',res.data.uemail);
+		              sessionStorage.setItem('city',res.data.ucity);
+		              sessionStorage.setItem('occupation',res.data.uoccupation);
+
+		            })
 				const name = sessionStorage.getItem('name');
 				const id = sessionStorage.getItem('id');
 
@@ -124,13 +136,14 @@ export default {
        			console.log(sessionStorage.getItem('token'))
     			this.$router.push('login');
     		}
-		}
+	},
+
 };
 </script>
 
 <style lang="stylus" scoped>
 	.el-input
-		margin 20px auto
+		margin 10px auto
 	.todo-list
 		width 100%
 		margin-top 20px

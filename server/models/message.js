@@ -3,19 +3,27 @@ const db = require('../config/db.js'),
 const testDb = db.connectDB; // 引入数据库
 const Message = testDb.import(messageModel); // 用sequelize的import方法引入表结构，实例化了User。
 
-const getUserSentMessage = async function(uid) {
+const getUserSentMessage = async function(data) {
 	const userMessages = await Message.findAll({
 		where : {
-			uid: uid
+			uid: data.uid,
+			mtime: {
+				'$gte': new Date(data.fromDate ? data.fromDate : "2000-01-01 00:00:00"),
+				'$lte': new Date(data.toDate ? data.toDate : "2200-01-01 00:00:00")
+			}
 		}
 	});
 	return userMessages
 }
 
-const getUserReceivedMessage = async function(uid) {
+const getUserReceivedMessage = async function(data) {
 	const userMessages = await Message.findAll({
 		where : {
-			toid: uid
+			toid: data.toid,
+			mtime: {
+				'$gte': new Date(data.fromDate ? data.fromDate : "2000-01-01 00:00:00"),
+				'$lte': new Date(data.toDate ? data.toDate : "2200-01-01 00:00:00")
+			}
 		}
 	});
 	return userMessages	
@@ -29,9 +37,18 @@ const insertMessage = async function(data) {
 	});
 }
 
+const deleteMessage = async function(data) {
+	await Message.destroy({
+		where: {
+			uid: data.uid,
+			mtime: new Date(data.mtime)
+		}
+	});
+}
 
 module.exports = {
 	getUserSentMessage,
 	getUserReceivedMessage,
-	insertMessage
+	insertMessage,
+	deleteMessage
 }

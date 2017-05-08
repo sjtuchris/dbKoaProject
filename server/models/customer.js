@@ -14,10 +14,12 @@ const User = testDb.import(userModel); // 用sequelize的import方法引入表�
   return userInfo // 返回数据
 }*/
 
-const getUserByName = async function (name){
+const getUserByName = async function (data){
   const userInfo = await User.findOne({
     where: {
-      uname: name
+      uname: data.uname ? data.uname : {
+        '$like': data.keywordOfUname ? '%' + data.keywordOfUname + '%' : '%'
+      }
     }
   })
 
@@ -30,7 +32,8 @@ const createNewUser = async function (userInfo) {
     uemail: userInfo.uemail,
     upassword: userInfo.upassword,
     ucity: userInfo.ucity,
-    uoccupation: userInfo.uoccupation
+    uoccupation: userInfo.uoccupation,
+    upic: userInfo.upic
     });
 }
 

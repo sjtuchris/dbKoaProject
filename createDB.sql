@@ -5,6 +5,7 @@ CREATE TABLE `Customers` (
   `upassword` VARCHAR(100) NOT NULL,
   `ucity` VARCHAR(100) NOT NULL ,
   `uoccupation` VARCHAR(100) NOT NULL ,
+  `upic` VARCHAR(100),
   `CreatedAt` timestamp NOT NULL DEFAULT current_timestamp,
   `UpdatedAt`timestamp NOT NULL DEFAULT current_timestamp,
   PRIMARY KEY (`uid`));

@@ -13,13 +13,16 @@ const router = VueRouter
 
 router.beforeEach((to,from,next) =>{
   const token = sessionStorage.getItem('demo-token');
-  if(to.path == '/'){ // 如果是跳转到登录页的
+  if(to.path == '/'||to.path == '/Register'){ // 如果是跳转到登录页的
     if(token != null){
       next(false) // 如果有token就转向todolist不返回登录页
     }
     next()
      // 否则跳转回登录页
   }else{
+    if(to.path == '/Register'){
+      next()
+    }
     if(token != 'null' && token != null){
       //Vue.prototype.$http.defaults.headers.common['Authorization'] = 'Bearer ' + token; // 注意Bearer后有个空格
       next() // 如果有token就正常转向

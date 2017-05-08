@@ -30,6 +30,10 @@ module.exports = function(sequelize, DataTypes) {
       type: DataTypes.STRING(100),
       allowNull: false
     },
+    upic: {
+      type: DataTypes.STRING(1000),
+      allowNull: true
+    },
     CreatedAt: {
       type: DataTypes.TIME,
       allowNull: false,
