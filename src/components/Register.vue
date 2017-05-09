@@ -8,7 +8,7 @@
       <el-input v-model="ruleForm.email"></el-input>
     </el-form-item>
     <el-form-item label="Password" prop="password">
-      <el-input v-model="ruleForm.password"></el-input>
+      <el-input type="password" v-model="ruleForm.password"></el-input>
     </el-form-item>
     <el-form-item label="Your City" prop="city">
       <el-input v-model="ruleForm.city"></el-input>
@@ -20,7 +20,7 @@
     <el-form-item label="Descrition" prop="desc">
       <el-input type="textarea" placeholder="Decrisbe yourself" v-model="ruleForm.desc"></el-input>
     </el-form-item>
-    <el-form-item>
+    <el-form-item class="button">
       <el-button type="primary" @click="submitForm('ruleForm')">Register</el-button>
       <el-button @click="resetForm('ruleForm')">Reset</el-button>
     </el-form-item>
@@ -118,13 +118,17 @@
     right:30%;
     padding:15px;
 
+  .demo-ruleForm
+    margin-top:0
+
   .title
     position:absolute;
     font-size 20px
     top:-50px
     left:30%
     right:30%
-
+  .button
+    margin-right:20%
 
 
     

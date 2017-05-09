@@ -9,11 +9,12 @@ import Userfile     from '../components/Userfile'
 import ProjectView  from '../components/ProjectView'
 import ProjectDetail from '../components/ProjectDetail'
 import PostProject from '../components/PostProject'
-
+import ModifyProject from '../components/ModifyProject'
 
 Vue.use(VueRouter)
 
 export default new VueRouter({
+  // mode: 'history',
   routes: [
   	{
   		path: '/',
@@ -45,6 +46,9 @@ export default new VueRouter({
     },{
       path: '/PostProject',
       component: PostProject      
+    },{
+      path: '/ModifyProject/:pid',
+      component: ModifyProject      
     },{
     	path: '*',
       	redirect: '/' 

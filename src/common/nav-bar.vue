@@ -70,8 +70,10 @@ export default {
 
 			this.name = userInfo.name;
 			let temp = userInfo.pic;
+			// if(temp==null){
+			// 	this.$router.go('/')
+			// }
 			this.picurl = temp;
-
 			// console.log(this.picurl);
 
 		}else{
@@ -115,20 +117,11 @@ export default {
 				// console.log(key, keyPath);
 			},
 			getUserInfo(){ // 获取用户信息
-				let nameobj={uname: sessionStorage.getItem('name')}
-
-	            this.$http.post('/api/user/info', nameobj) // 将信息发送给后端
-		            .then((res) => {
-		              // console.log(res);
-		              sessionStorage.setItem('email',res.data.uemail);
-		              sessionStorage.setItem('city',res.data.ucity);
-		              sessionStorage.setItem('occupation',res.data.uoccupation);
-		              sessionStorage.setItem('picurl',res.data.upic);
-
-		            })
+				
 				const name = sessionStorage.getItem('name');
 				const id = sessionStorage.getItem('id');
 				const pic = sessionStorage.getItem('picurl');	
+				console.log(pic)
 
 				if(name != null && name != 'null'){
 					// let decode = jwt.verify(token,'vue-koa-demo'); // 解析token
@@ -141,8 +134,14 @@ export default {
      			 // console.log(ev);
     		},
     		logout() {
+    			// this.$session.destroy();
     			sessionStorage.setItem('demo-token', null);
-       			console.log(sessionStorage.getItem('token'))
+    			sessionStorage.setItem('name',null);
+    			sessionStorage.setItem('id',null);
+					sessionStorage.setItem('email',null);
+          sessionStorage.setItem('city',null);
+          sessionStorage.setItem('occupation',null);
+          sessionStorage.setItem('picurl',null);
     			this.$router.push('login');
     		}
 	},

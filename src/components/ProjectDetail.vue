@@ -5,7 +5,7 @@
     <el-row class="proinfo" :gutter="24">
       <el-col :span="4" class="proimg">
          <el-card :body-style="{ padding: '10px' }">
-            <img src="../assets/logo.png" class="image">
+            <img :src="project[0].ppic" class="image">
        
           </el-card>
 
@@ -18,7 +18,7 @@
               <div class="panel panel-success">
                 <div class="panel-body">
                   <div class="sponsor">
-                    <h3>Name</h3>
+                    <h3>{{project[0].pname}}</h3>
 
                   </div>
                 </div>
@@ -27,10 +27,10 @@
                 <div class="panel-body">
                   <div class="sponsor">
                     <h4>Owner</h4>
-                    <img src="../assets/logo.png" width="40" height="40">
+                    <img :src="ownerinfo.upic" width="40" height="40">
                     <div class="sponsor-content">
-                      <strong>Ownername</strong>
-                      <span>released n days ago</span>
+                      <strong>{{ownerinfo.uname}}</strong>
+                      <span>released at {{(releasedays.getMonth()+1) + '/' +releasedays.getDate() + '/' + releasedays.getFullYear()}}</span>
                     </div>
                   </div>
                 </div>
@@ -74,9 +74,9 @@
 
         <div class="panel-group">
           <div class="panel panel-primary">
-            <div class="panel-heading">Panel Content</div>
+            <div class="panel-heading">Description</div>
             <div class="panel panel-default">
-              <div class="panel-body">Panel Content</div>
+              <div class="panel-body">{{project[0].pdescription}}</div>
             </div>
           </div>
         </div>
@@ -148,23 +148,53 @@ import SideBar       from '../common/side-bar'
 export default {
   name: 'user-view',
   created(){ // 组件创建时调用
-  
+    let obj = {pname: this.$route.params.pid};
+    const pro = this.getProject(obj); // 新增一个获取project的方法
+    
+
   },
   data () {
     return {
-      currentDate: new Date(),
-      name: 'Project Name Here',
-      value5: 3.7
-
-
+      value5: 3.7,
+      project: [],
+      ownerinfo: '',
+      releasedays: new Date()
     }
   },
+
+
+
   methods: {
       handleOpen(key, keyPath) {
         console.log(key, keyPath);
       },
       handleClose(key, keyPath) {
         console.log(key, keyPath);
+      },
+      getProject(obj){ 
+        this.$http.post('/api/project/getProjects', obj) // get project info
+          .then((res) => {
+            if(res.data == []){
+              this.$router.push('/projectview')
+            }
+            this.project=res.data
+            this.releasedays=new Date(res.data[0].postime)
+
+            this.$http.post('/api/user/info', {uid: res.data[0].pownid}) // get ownername using pownid
+            .then((res) => {
+              console.log(res.data);
+
+
+              this.ownerinfo=res.data     
+              }, (err) => {
+                  this.$message.error('Oops, try again later！')
+
+            })  
+
+            }, (err) => {
+                this.$message.error('Oops, try again later！')
+
+        })
       }
   },
 

@@ -5,32 +5,34 @@ import ElementUI from 'element-ui' // 引入element-ui, 前端框架
 import locale from 'element-ui/lib/locale/lang/en'
 import 'element-ui/lib/theme-default/index.css'
 import Axios from 'axios'
+import VueSession from 'vue-session'
 
 Vue.prototype.$http = Axios // 类似于vue-resource的调用方法
 
 Vue.use(ElementUI, { locale })
+Vue.use(VueSession)
+
 // Vue.use(ElementUI)
 
 const router = VueRouter
 
 router.beforeEach((to,from,next) =>{
   const token = sessionStorage.getItem('demo-token');
-  if(to.path == '/'||to.path == '/Register'){ // 如果是跳转到登录页的
+  if(to.path == '/'){ // 如果是跳转到登录页的
     if(token != null){
-      next(false) // 如果有token就转向todolist不返回登录页
+      next() // 如果有token就转向todolist不返回登录页
     }
     next()
      // 否则跳转回登录页
   }else{
     if(to.path == '/Register'){
       next()
-    }
-    if(token != 'null' && token != null){
+    }else if(token != 'null' && token != null){
       //Vue.prototype.$http.defaults.headers.common['Authorization'] = 'Bearer ' + token; // 注意Bearer后有个空格
       next() // 如果有token就正常转向
-    }else{
-      next('/') // 否则跳转回登录页
-    }
+      }else{
+        next('/') // 否则跳转回登录页
+      }
   }
 })
 

@@ -28,6 +28,11 @@
 
 <script>
 export default {
+  created(){ // 组件创建时调用
+    if(sessionStorage.getItem('demo-token') != null){
+      this.$router.push('/projectview')
+    }
+  },
   data () {
     return {
       account: '',
@@ -48,6 +53,17 @@ export default {
             sessionStorage.setItem('name',res.data.name);
             sessionStorage.setItem('id',res.data.id) // 用sessionStorage把token存下来
 
+            let nameobj={uname: sessionStorage.getItem('name')}
+
+              this.$http.post('/api/user/info', nameobj) // 将信息发送给后端
+                .then((res) => {
+                  // console.log(res);
+                  sessionStorage.setItem('email',res.data.uemail);
+                  sessionStorage.setItem('city',res.data.ucity);
+                  sessionStorage.setItem('occupation',res.data.uoccupation);
+                  sessionStorage.setItem('picurl',res.data.upic);
+
+                })
 
             this.$message({ // 登录成功，显示提示语
               type: 'success',

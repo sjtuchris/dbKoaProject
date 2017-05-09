@@ -2,8 +2,8 @@
   <div>
     <nav-bar></nav-bar>
     <el-carousel :interval="4000" type="card" height="200px">
-      <el-carousel-item v-for="item in 5" :key="item">
-        <h3><img :src="projectgroup[item].ppic" width="20%"></h3>
+      <el-carousel-item v-for="item in [projectgroup[projectgroup.length-1],projectgroup[projectgroup.length-2],projectgroup[projectgroup.length-3],projectgroup[projectgroup.length-4]]" :key="item">
+        <h3><router-link :to="'/projectdetail'+'/'+item.pname"><img :src="item.ppic" width="20%"></router-link></h3>
       </el-carousel-item>
     </el-carousel>
     <el-row class="cardgroup" :gutter="24">
@@ -11,14 +11,16 @@
         <el-col class="card" :span="5" v-for="(pro, index) in projectgroup" :key="pro" :offset="index > 0 ? 1 : 1">
         
           <el-card :body-style="{ padding: '10px' }">
-            <img :src="pro.ppic" class="image">
-            <div style="padding: 14px;">
-              <span>{{pro.pname}}</span>
-              <div class="bottom clearfix">
-                <time class="time">{{ pro.postime }}</time>
-                <el-button type="text" class="button">Detail</el-button>
+            <router-link :to="'/projectdetail'+'/'+pro.pname">
+              <img :src="pro.ppic" class="image">
+              <div style="padding: 14px;">
+                <span>{{pro.pname}}</span>
+                <div class="bottom clearfix">
+                  <time class="time">released at {{ (new Date(pro.postime).getMonth()+1) + '/' +new Date(pro.postime).getDate() + '/' + new Date(pro.postime).getFullYear() }}</time>
+                  <el-button type="text" class="button">Detail</el-button>
+                </div>
               </div>
-            </div>
+            </router-link>
           </el-card>
         </el-col>
       </el-col>
@@ -57,18 +59,7 @@ export default {
           .then((res) => {
             console.log(res.data);
             this.projectgroup=res.data
-            // if(res.data.success){ // 如果成功
-                
-            //     this.$message({ // 登录成功，显示提示语
-            //       type: 'success',
-            //       message: 'Posted successfully！'
-            //     });
-            //     alert('submit!');
-
-            //     this.$router.push('/projectview') 
-            // }else{
-            //     this.$message.error(res.data.info); // 
-            //   }
+          
             }, (err) => {
                 this.$message.error('Oops, try again later！')
 

@@ -6,28 +6,30 @@
 
         <div class="panel-group">
           <div class="panel panel-primary">
-            <div class="panel-heading">Post Your Project</div>
+            <div class="panel-heading">Modify Your Project</div>
             <div class="panel panel-default">
               <div class="panel-body">
-              	
-				<el-form :model="ruleForm" :rules="rules" ref="ruleForm" label-width="100px" class="demo-ruleForm">
+        <el-row>
+        <img :src="project[0].ppic">
+        </el-row>      	
+				<el-form :model="ruleForm" ref="ruleForm" label-width="100px" class="demo-ruleForm">
 				  <el-form-item label="Name" prop="name">
-				    <el-input v-model="ruleForm.name"></el-input>
+				    <el-input v-model="project[0].pname"></el-input>
 				  </el-form-item>
 				  <el-form-item label="Money Range" prop="max_amount">
 				    <el-col :span="11">
-				   		<el-input v-model="ruleForm.min_amount" placeholder="Minimum Amount" prop="min_amount"></el-input>
+				   		<el-input v-model="project[0].min_amount" placeholder="Minimum Amount" prop="min_amount"></el-input>
 				    </el-col>
 				    <el-col class="line" :span="2">-</el-col>
 				    <el-col :span="11">
-				      	<el-input v-model="ruleForm.max_amount" placeholder="Maximum Amount" prop="max_amount"></el-input>
+				      	<el-input v-model="project[0].max_amount" placeholder="Maximum Amount" prop="max_amount"></el-input>
 
 				    </el-col>
 				  </el-form-item>
 				  <el-form-item label="Deadline" required>
 				    <el-col :span="11">
 				      <el-form-item prop="date1">
-				        <el-date-picker type="date" placeholder="Choose Date" v-model="ruleForm.date1" style="width: 100%;"></el-date-picker>
+				        <el-date-picker type="date" placeholder="Choose Date" v-model="ruleForm.date1" style="width: 100%;" require></el-date-picker>
 				      </el-form-item>
 				    </el-col>
 				    <el-col class="line" :span="2">-</el-col>
@@ -38,7 +40,7 @@
 				    </el-col>
 				  </el-form-item>
 
-				  <el-form-item label="Expected Release Time" required>
+				  <el-form-item label="Expected Release Time">
             <el-col :span="11">
               <el-form-item prop="">
                 <el-date-picker type="date" placeholder="Choose Date"  style="width: 100%;"></el-date-picker>
@@ -88,10 +90,10 @@
 					</el-form-item>
 
 				  <el-form-item label="Description" prop="desc">
-				    <el-input type="textarea" v-model="ruleForm.desc"></el-input>
+				    <el-input type="textarea" v-model="project[0].pdescription"></el-input>
 				  </el-form-item>
 				  <el-form-item>
-				    <el-button type="primary" @click="submitForm('ruleForm')">Post Now!</el-button>
+				    <el-button type="primary" @click="submitForm('ruleForm')">Complete!</el-button>
 				    <el-button @click="resetForm('ruleForm')">Reset</el-button>
 				  </el-form-item>
 				</el-form>
@@ -111,7 +113,12 @@ import NavBar        from '../common/nav-bar'
 import SideBar       from '../common/side-bar'
 export default {
   name: 'post-project',
+  created(){ // 组件创建时调用
+    let obj = {pname: this.$route.params.pid};
+    const pro = this.getProject(obj); // 新增一个获取project的方法
+    
 
+  },
 	data() {
 		var validateMax = (rule, value, callback) => {
       if (value < this.ruleForm.min_amount) {
@@ -129,68 +136,40 @@ export default {
         region: '',
         date1: '',
         date2: '',
-        delivery: false,
         type: [],
         resource: '',
         desc: '',
         pic: ''
       },
-      rules: {
-        name: [
-          { required: true, message: 'Project Name required', trigger: 'blur' },
-          { min: 3, max: 30, message: 'Length ranging from 3 to 30 words', trigger: 'blur' }
-        ],
-        min_amount: [
-        	{ required: true, message: 'Minimum Amount required', trigger: 'blur'}
-        ],
-        max_amount: [
-        	{ required: true, message: 'Minimum Amount required', trigger: 'blur'},
-        	{ validator: validateMax, trigger:'blur'}
-        ],
-        date1: [
-          { type: 'date', required: true, message: 'Choose date', trigger: 'change' }
-        ],
-        date2: [
-          { type: 'date', required: true, message: 'Choose time', trigger: 'change' }
-        ],
-        type: [
-          { type: 'array', required: true, message: 'Choose one tag at least', trigger: 'change' }
-        ],
-        resource: [
-          { required: true, message: 'Selection required', trigger: 'change' }
-        ],
-        desc: [
-          { required: true, message: 'Description required', trigger: 'blur' }
-        ],
-        
-      }
+      project: [],
+      ownerinfo: '',
+      releasedays: new Date(),
+      
     };
   },
   methods: {
     submitForm(formName) {
-    	console.log(this.pic)
-      this.$refs[formName].validate((valid) => {
-      if (valid) {
 
 		    let obj = {
-	        pname: this.ruleForm.name,
-	        pdescription: this.ruleForm.desc,
+          pid: this.project[0].pid,
+	        pname: this.project[0].pname,
+	        pdescription: this.project[0].pdescription,
 	        pownid: sessionStorage.getItem('id'),
-	        min_amount: this.ruleForm.min_amount,
-	        max_amount: this.ruleForm.max_amount,
-	        fund_endtime: this.ruleForm.date1,
-	        ppic: this.pic,
+	        min_amount: this.project[0].min_amount,
+	        max_amount: this.project[0].max_amount,
+	        fund_endtime: (this.ruleForm.date1==null) ? this.project[0].fund_endtime: this.ruleForm.date1,
+	        ppic: (this.pic==null) ? this.project[0].ppic : this.pic,
 	        pstatus: 'active'
 	      }
 	      console.log(obj)
-				this.$http.post('/api/project/postProject', obj) // 将信息发送给后端
+				this.$http.post('/api/project/updateProject', obj) // 将信息发送给后端
 			        .then((res) => {
 			          console.log(res);
 				        if(res.data.success){ // 如果成功
 				            
 				            this.$message({ // 登录成功，显示提示语
 				              type: 'success',
-				              message: 'Posted successfully！'
+				              message: 'Modified successfully！'
 				            });
 				            alert('submit!');
 
@@ -203,13 +182,8 @@ export default {
 
 						})
 
-      } else {
-        console.log('error submit!!');
-        return false;
-      }
-      });
-    },
-    resetForm(formName) {
+      },
+      resetForm(formName) {
       this.$refs[formName].resetFields();
     },
     
@@ -225,16 +199,31 @@ export default {
         console.log(res.data.pictureUrl);
         this.pic=res.data.pictureUrl
         console.log(this.pic);
+    },
+    getProject(obj){ 
+        this.$http.post('/api/project/getProjects', obj) // get project info
+          .then((res) => {
+            if(res.data == []){
+              this.$router.push('/projectview')
+            }
+            this.project=res.data
+            this.releasedays=new Date(res.data[0].postime)
 
-        // let urlobj = {
-        //   "thisname": sessionStorage.getItem('name'),
-        //   "upic": res.data.pictureUrl
-        // }
-        // this.$http.post('/api/user/update', urlobj)
-        //   .then((res) => {
-        //           console.log(res);
-          
-        //         })
+            this.$http.post('/api/user/info', {uid: res.data[0].pownid}) // get ownername using pownid
+            .then((res) => {
+              console.log(res.data);
+
+
+              this.ownerinfo=res.data     
+              }, (err) => {
+                  this.$message.error('Oops, try again later！')
+
+            })  
+
+            }, (err) => {
+                this.$message.error('Oops, try again later！')
+
+        })
       }
   },
 

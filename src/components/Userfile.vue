@@ -46,7 +46,7 @@
         </div>
         <div class="user-info">
           <h2>Profile Information</h2>
-          <span class="info-title">Username</span><span class="info-detail">{{user.username}}</span><br>
+          <span class="info-title">Username</span><el-input class="info-detail">{{user.username}}</el-input><br>
           <span class="info-title">Email</span><span class="info-detail">{{user.email}}</span><br>
           <span class="info-title">City</span><span class="info-detail">{{user.city}}</span><br>
           <span class="info-title">Occupation</span><span class="info-detail">{{user.occupation}}</span><br>
@@ -147,16 +147,16 @@ export default {
                 })
       },
       beforeAvatarUpload(file) {
-        const isJPG = file.type === 'image/jpeg';
+        // const isJPG = file.type === 'image/jpeg';
         const isLt2M = file.size / 1024 / 1024 < 2;
 
-        if (!isJPG) {
-          this.$message.error('JPG only');
-        }
+        // if (!isJPG) {
+        //   this.$message.error('JPG only');
+        // }
         if (!isLt2M) {
           this.$message.error('Avator must be smaller than 2MB!');
         }
-        return isJPG && isLt2M;
+        return isLt2M;
       }
 
   },
@@ -226,7 +226,7 @@ export default {
         color #808080
       .info-detail
         display block
-        margin-left 80px
+        
         font-size 18px
         color #333
 
