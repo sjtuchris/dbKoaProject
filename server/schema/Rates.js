@@ -21,7 +21,7 @@ module.exports = function(sequelize, DataTypes) {
       }
     },
     rpoint: {
-      type: DataTypes.INTEGER(11),
+      type: DataTypes.DECIMAL(2, 1),
       allowNull: false
     },
     ratime: {

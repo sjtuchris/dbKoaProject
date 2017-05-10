@@ -5,7 +5,7 @@ CREATE TABLE `Customers` (
   `upassword` VARCHAR(100) NOT NULL,
   `ucity` VARCHAR(100) NOT NULL ,
   `uoccupation` VARCHAR(100) NOT NULL ,
-  `upic` VARCHAR(100),
+  `upic` VARCHAR(1000),
   `CreatedAt` timestamp NOT NULL DEFAULT current_timestamp,
   `UpdatedAt`timestamp NOT NULL DEFAULT current_timestamp,
   PRIMARY KEY (`uid`));
@@ -20,6 +20,7 @@ CREATE TABLE `Projects` (
   `ptotalfinal` INT,
   `fund_endtime` DATETIME NOT NULL,
   `pro_endtime` DATETIME,
+  `ppic` VARCHAR(1000),
   `postime` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `pstatus` VARCHAR(45) NOT NULL ,
   `UpdatedAt`timestamp NOT NULL DEFAULT current_timestamp,
@@ -139,7 +140,7 @@ CREATE TABLE `Project_type` (
 
 CREATE TABLE `Messages` (
   `uid` INT NOT NULL,
-  `toid` INT NOT NULL,	
+  `toid` INT NOT NULL,
   `mcontent` VARCHAR(1000) NOT NULL,
   `mtime` DATETIME NOT NULL DEFAULT current_timestamp,
   PRIMARY KEY (`uid`,`mtime`),

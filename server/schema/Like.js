@@ -20,7 +20,7 @@ module.exports = function(sequelize, DataTypes) {
         key: 'pid'
       }
     },
-    like: {
+    like_dislike: {
       type: DataTypes.STRING(40),
       allowNull: false
     }

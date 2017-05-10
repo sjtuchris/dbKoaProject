@@ -7,7 +7,7 @@ const getProjects = async function(data) {
 	const certainProjects = await Projects.findAll({
 		where: {
 			pid: data.pid ? data.pid : {
-				'$between': [data.lowerId ? data.lowerId : 0, data.upperId ? data.upperId : Number.MAX_VALUE] 
+				'$between': [data.lowerPid ? data.lowerPid : 0, data.upperPid ? data.upperPid : Number.MAX_VALUE] 
 			},
 			pownid: data.pownid ? data.pownid : {
 				'$between': [data.lowerPownid ? data.lowerPownid : 0, data.upperPownid ? data.upperPownid :Number.MAX_VALUE] 
@@ -15,9 +15,9 @@ const getProjects = async function(data) {
 			postime: data.postime ? data.postime : {
 				'$between': [new Date(data.fromPosttime ? data.fromPosttime : "2010-01-01 00:00:00"), new Date(data.toPosttime ? data.toPosttime : "2200-01-01 00:00:00")]
 			},
-			// ptotalfinal: data.ptotalfinal ? data.ptotalfinal : {
-			// 	'$between': [data.lowerPtotalfinal ? data.lowerPtotalfinal : 0, data.upperPtotalfinal ? data.upperPtotalfinal : Number.MAX_VALUE]
-			// },
+			ptotalfinal: data.ptotalfinal ? data.ptotalfinal : ((data.lowerPtotalfinal || data.upperPtotalfinal) ? {
+			 	'$between': [data.lowerPtotalfinal ? data.lowerPtotalfinal : 0, data.upperPtotalfinal ? data.upperPtotalfinal : Number.MAX_VALUE]
+			} : null),
 			min_amount: data.min_amount ? data.min_amount : {
 				'$between': [data.lowerMin_Amount ? data.lowerMin_Amount : 0, data.upperMin_Amount ? data.upperMin_Amount : Number.MAX_VALUE]
 			},
@@ -27,9 +27,9 @@ const getProjects = async function(data) {
 			fund_endtime: data.fund_endtime ? data.fund_endtime : {
 				'$between': [new Date(data.fromFund_Endtime ? data.toFund_Endtime : "2010-01-01 00:00:00"), new Date(data.fromFund_Endtime ? data.toFund_Endtime : "2200-01-01 00:00:00")]
 			},
-			// pro_endtime: data.pro_endtime ? data.pro_endtime : ((data.lowerPro_Endtime || data.upperPro_Endtime) ? {
-			// 	'$between': [new Date(data.lowerPro_Endtime ? data.lowerPro_Endtime : "2010-01-01 00:00:00"), new Date(data.upperPro_Endtime ? data.upperPro_Endtime : "2200-01-01 00:00:00")]
-			// } : null),
+			pro_endtime: data.pro_endtime ? data.pro_endtime : ((data.lowerPro_Endtime || data.upperPro_Endtime) ? {
+			 	'$between': [new Date(data.lowerPro_Endtime ? data.lowerPro_Endtime : "2010-01-01 00:00:00"), new Date(data.upperPro_Endtime ? data.upperPro_Endtime : "2200-01-01 00:00:00")]
+			} : null),
 			UpdatedAt: data.updateAt ? data.updateAt : {
 				'$between': [new Date(data.updateAt ? data.updateAt : "2010-01-01 00:00:00"), new Date(data.updateAt ? data.updateAt : "2200-01-01 00:00:00")]
 			},

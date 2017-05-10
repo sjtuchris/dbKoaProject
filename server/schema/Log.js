@@ -1,7 +1,5 @@
-/* jshint indent: 2 */
-
 module.exports = function(sequelize, DataTypes) {
-  return sequelize.define('Comments', {
+  return sequelize.define('Log', {
     uid: {
       type: DataTypes.INTEGER(11),
       allowNull: false,
@@ -11,26 +9,21 @@ module.exports = function(sequelize, DataTypes) {
         key: 'uid'
       }
     },
-    pid: {
-      type: DataTypes.INTEGER(11),
-      allowNull: false,
-      primaryKey: true,
-      references: {
-        model: 'Projects',
-        key: 'pid'
-      }
-    },
-    ccontent: {
+    lcontent: {
       type: DataTypes.STRING(1000),
       allowNull: false
     },
-    ctime: {
+    ltype: {
+      type: DataTypes.STRING(40),
+      allowNull: false,
+    },
+    ltime: {
       type: DataTypes.DATE,
       allowNull: false,
       defaultValue: sequelize.literal('CURRENT_TIMESTAMP'),
       primaryKey: true
     }
   }, {
-    tableName: 'Comments'
+    tableName: 'Log'
   });
 };
