@@ -6,17 +6,23 @@
           <template slot="title"><i class="el-icon-message"></i>Function Menu</template>
           <el-menu-item-group>
             <template slot="title">Group</template>
-            <el-menu-item index="1-1">1</el-menu-item>
-            <el-menu-item index="1-2">2</el-menu-item>
+            <el-menu-item index="1-1">
+
+
+
+            </el-menu-item>
+            <!-- <el-menu-item index="1-2">2</el-menu-item> -->
           </el-menu-item-group>
           
-          <el-submenu index="1-4">
+       <!--    <el-submenu index="1-4">
             <template slot="title">4</template>
             <el-menu-item index="1-4-1">1</el-menu-item>
-          </el-submenu>
+          </el-submenu> -->
         </el-submenu>
         <el-menu-item index="2" @click="toPost"><i class="el-icon-edit"></i>Post Project</el-menu-item>
-        <el-menu-item index="3"><i class="el-icon-setting"></i>Nav3</el-menu-item>
+        <router-link to='/userfile'>
+        <el-menu-item index="3"><i class="el-icon-setting"></i>Settings</el-menu-item>
+        </router-link>
       </el-menu>
   </el-row>
 </div>

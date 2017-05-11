@@ -11,14 +11,14 @@
 				</el-col>
 				<el-col :xs="4" :sm="4" :md="4" :lg="4">
 					<el-submenu index="2">
-						<template slot="title">Toggle</template>
-						<el-menu-item index="2-1">1</el-menu-item>
-						<el-menu-item index="2-2">2</el-menu-item>
-						<el-menu-item index="2-3">3</el-menu-item>
+						<template slot="title">Tags</template>
+						<el-menu-item index="2-1" :click="goart">Arts</el-menu-item>
+						<el-menu-item index="2-2">IT</el-menu-item>
+						<el-menu-item index="2-3">Music</el-menu-item>
 					</el-submenu>
 				</el-col>
 				<el-col :xs="6" :sm="4" :md="12" :lg="4">
-					<el-menu-item index="3"><router-link to="/login">Manage</router-link></el-menu-item>
+					<el-menu-item index="3"><router-link to="/friendzone">Friends</router-link></el-menu-item>
 				</el-col>
 				<el-col :xs="6" :sm="6" :md="12" :lg="7" class="searchbar">
 					<el-menu-item index="3">
@@ -26,7 +26,8 @@
 						  placeholder="Search..."
 						  icon="search"
 						  v-model="input2"
-						  :on-icon-click="handleIconClick">
+						  :on-icon-click="handleIconClick"
+						  @keyup.enter.native="handleIconClick">
 						</el-input>
 					</el-menu-item>
 				</el-col>
@@ -40,8 +41,9 @@
 				<el-col :xs="4" :sm="4" :md="2" :lg="2">
 					<el-submenu index="5">
 						<template slot="title">{{name}}</template>
-						<el-menu-item index="2-1">1</el-menu-item>
-						<el-menu-item index="2-2">2</el-menu-item>
+						<router-link to="/userfile">
+						<el-menu-item index="2-1">Profile</el-menu-item>
+						</router-link>
 						<el-menu-item index="2-3" @click="logout">Log out</el-menu-item>
 
 					</el-submenu>
@@ -111,17 +113,25 @@ export default {
 			}
 		}
 	},
-
+	watch: {
+    	$route (to, from) {
+    		this.$router.go()
+    	}
+    },
 	methods: {
 			handleSelect(key, keyPath) {
 				// console.log(key, keyPath);
 			},
 			getUserInfo(){ // 获取用户信息
 				
-				const name = sessionStorage.getItem('name');
-				const id = sessionStorage.getItem('id');
-				const pic = sessionStorage.getItem('picurl');	
-				console.log(pic)
+				const name = localStorage.getItem('name');
+				const id = localStorage.getItem('id');
+				let pic='';
+				if (localStorage.getItem('picurl')=='null'){
+					pic = 'static/album/avatar.png'
+				}
+				else{
+					pic = localStorage.getItem('picurl');}	
 
 				if(name != null && name != 'null'){
 					// let decode = jwt.verify(token,'vue-koa-demo'); // 解析token
@@ -131,17 +141,26 @@ export default {
 				}
 			},
 			handleIconClick(ev) {
-     			 // console.log(ev);
+     			 console.log('/projectdetail/'+this.input2);
+     			 this.$router.push('/projectview/'+this.input2)
     		},
     		logout() {
     			// this.$session.destroy();
-    			sessionStorage.setItem('demo-token', null);
-    			sessionStorage.setItem('name',null);
-    			sessionStorage.setItem('id',null);
-					sessionStorage.setItem('email',null);
-          sessionStorage.setItem('city',null);
-          sessionStorage.setItem('occupation',null);
-          sessionStorage.setItem('picurl',null);
+    			localStorage.setItem('demo-token', null);
+    			localStorage.setItem('name',null);
+    			localStorage.setItem('id',null);
+				localStorage.setItem('email',null);
+          		localStorage.setItem('city',null);
+          		localStorage.setItem('occupation',null);
+          		localStorage.setItem('picurl',null);
+
+          		localStorage.setItem('demo-token', null);
+    			localStorage.setItem('name',null);
+    			localStorage.setItem('id',null);
+				localStorage.setItem('email',null);
+          		localStorage.setItem('city',null);
+          		localStorage.setItem('occupation',null);
+          		localStorage.setItem('picurl',null);
     			this.$router.push('login');
     		}
 	},
@@ -150,6 +169,8 @@ export default {
 </script>
 
 <style lang="stylus" scoped>
+	.el-menu-demo
+		margin-top:0
 	.el-input
 		margin 10px auto
 	.todo-list

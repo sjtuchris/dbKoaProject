@@ -41,7 +41,7 @@ app.on('error', function(err, ctx){
 });
 
 koa.use('/auth', auth.routes());
-//koa.use("/api",jwt({secret: 'vue-koa-demo'}),api.routes());
+// koa.use("/api",jwt({secret: 'vue-koa-demo'}),api.routes());
 
 koa.use('/api', api.routes());
 

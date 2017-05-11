@@ -6,100 +6,19 @@
         <div class="face-area">
           <h3>Profile</h3>
           <!-- <img v-if="imageUrl" :src="imageUrl" class="avatar"> -->
-          <img :src="pic" class="avator">
-          <button type="button" class="btn btn-info btn-lg" data-toggle="modal" data-target="#myModal">Upload photo</button>
-
-          <div id="myModal" class="modal fade" role="dialog">
-            <div class="modal-dialog">
-
-              <!-- Modal content-->
-              <div class="modal-content">
-                <div class="modal-header">
-                  <button type="button" class="close" data-dismiss="modal">&times;</button>
-                  <h4 class="modal-title">Choose your photo</h4>
-                </div>
-                <div class="modal-body">
-                  <!-- <VueImgInputer v-model="picValue" theme="light" size="middle"></VueImgInputer> -->
-
-                    <!-- action="https://jsonplaceholder.typicode.com/posts/" -->
-
-                  <el-upload
-                    class="avatar-uploader"
-                    action="/api/upload/postUpload"
-                    :show-file-list="false"
-                    :on-success="handleAvatarSuccess"
-                    :before-upload="beforeAvatarUpload">
-                    <img v-if="imageUrl" :src="imageUrl" class="avatar">
-                    <i v-else class="el-icon-plus avatar-uploader-icon"></i>
-                  </el-upload>
-
-                </div>
-                <div class="modal-footer">
-                  <button type="button" class="btn btn-primary" data-dismiss="modal" @click="Save">Save</button>
-                  <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                </div>
-              </div>
-
-            </div>
-          </div>
-
+          <img :src="user.upic" class="avator">
+          
         </div>
         <div class="user-info">
           <h2>Profile Information</h2>
-          <span class="info-title">Username</span><el-input class="info-detail" v-model="user.username"></el-input><br>
-          <span class="info-title">Email&nbsp&nbsp&nbsp&nbsp&nbsp</span><el-input class="info-detail" v-model="user.email"></el-input><br>
-          <span class="info-title">City&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp</span><el-input class="info-detail" v-model="user.city"></el-input><br>
-          <span class="info-title">Occupation</span><el-input class="info-detail" v-model="user.occupation"></el-input><br>
-          <el-card class="box-card">
-            <div slot="header" class="clearfix">
-              <el-row>
-                <img style="width: 40%" src="/static/album/visa.png">
-              </el-row>
-              <span style="line-height: 36px;">Card Information</span>
-             
-            </div>
-            <div class="cardbox" v-for="(card,index) in cards" :key="card">
-                
-                <div class="panel panel-default">
-                  <div class="panel-body">
-                    <div class="sponsor">
-                      <h4>Card No.{{index+1}}</h4>
-                      <div class="sponsor-content">
-                        <strong>Card Number: </strong>
-                        <span>{{card.cnum}}</span>
-                      </div>
-                      <div class="sponsor-content">
-                        <strong>Exp date: </strong>
-                        <span>{{new Date(card.exp_date).getMonth()}}/{{new Date(card.exp_date).getFullYear()}}</span>
-                      </div>
-                      <div class="sponsor-content">
-                        <strong>Holder: </strong>
-                        <span>{{card.holder}}</span>
-                        <el-button style="float: right;" type="success" @click="removeCard(card)">Remove card</el-button>
-                      </div>
-
-                    </div>
-                  </div>
-                </div>                
-
-            </div>
-            <el-form ref="form" :model="form" label-width="80px">
-              <el-form-item label="New Card Number">
-                <el-input v-model="newCard.cnum" placeholder="Card Number"></el-input>
-              </el-form-item>
-              <el-form-item label="New Card Exp Date">
-                <el-date-picker type="date" placeholder="Choose Date" v-model="newCard.exp_date" style="width: 100%;"></el-date-picker>
-              </el-form-item>
-              <el-form-item label="New Card Holder">
-                <el-input v-model="newCard.holder" placeholder="Card Holder"></el-input>
-              </el-form-item>            
-            </el-form>
-            <el-button style="float: left; margin-bottom: 3%" type="primary" @click="addCard">Add card</el-button>
-
-          </el-card>
-          <span class="info-title">Description</span><el-input class="info-detail bio" v-model="user.Description"></el-input><br>
+          <span class="info-title">Username</span><el-input class="info-detail" disabled v-model="user.uname"></el-input><br>
+          <span class="info-title">Email&nbsp&nbsp&nbsp&nbsp&nbsp</span><el-input disabled class="info-detail" v-model="user.uemail"></el-input><br>
+          <span class="info-title">City&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp</span><el-input disabled class="info-detail" v-model="user.ucity"></el-input><br>
+          <span class="info-title">Occupation</span><el-input class="info-detail" disabled v-model="user.uoccupation"></el-input><br>
+          
+          <span class="info-title">Description</span><el-input disabled class="info-detail bio" v-model="user.udescription"></el-input><br>
         </div>
-        <el-button type="primary" @click="updateUser">Update</el-button>
+    
 
       <!-- <template v-if="user">
         <h1>User : {{ user.id }}</h1>
@@ -121,47 +40,15 @@ import NavBar        from '../common/nav-bar'
 export default {
   name: 'user-view',
   created(){ // 组件创建时调用
-    const userInfo = this.getUserInfo(); // 新增一个获取用户信息的方法
-    if(userInfo != null){
-      this.user.username = userInfo.name;
-      this.user.email = userInfo.email;
-      this.user.city = userInfo.city;
-      this.user.occupation = userInfo.occupation;
-      this.pic = userInfo.pic=="null"?"/static/album/avatar.png":userInfo.pic
-      console.log(this.pic)
-    }else{
-      this.id = '';
-      this.name = ''
-    }
+    this.getUserInfo(); // 新增一个获取用户信息的方法
+    
   },
   data () {
     return {
       user: {
-        // paramId: 'user id from params:' + this.$route.params.id,
-        username: '',
-        email: '',
-        city: '',
-        occupation: '',
-        bio: '*',
-        pic:'',
-        Description:''
-      },
-      newCard:{
-        cnum:'',
-        exp_date:'',
-        holder:''
-      },
-      cards: [],
-      pic:'',
-      focused: false,
-      picValue: '',
-
-      imageUrl: ''
-
-
-    }
-  },
-  watch: {
+  
+      }
+    }   
   },
   methods: {
 
@@ -172,26 +59,16 @@ export default {
 
     },
     getUserInfo(){ // 获取用户信息
-        this.$http.post('/api/card/cardlist', {uid: localStorage.getItem('id')}) // get ownername using id
-            .then((res) => {
-              console.log(res.data);
+      this.$http.post('/api/user/info', {uname: this.$route.params.uname}) // get ownername using pownid
+          .then((res) => {
 
-              this.cards=res.data     
-              }, (err) => {
-                  this.$message.error('Oops, try again later！')
+            console.log(res.data);
 
-            })
-        const name = localStorage.getItem('name');
-        const city = localStorage.getItem('city');
-        const occupation = localStorage.getItem('occupation');
-        const email = localStorage.getItem('email');
-        const pic = localStorage.getItem('picurl')
-        if(name != null && name != 'null'){
-          // let decode = jwt.verify(token,'vue-koa-demo'); // 解析token
-          return {name: name,city: city,occupation: occupation, email: email, pic: pic} // decode解析出来实际上就是{name: XXX,id: XXX}
-        }else {
-          return null
-        }
+            this.user=res.data     
+            }, (err) => {
+                this.$message.error('Oops, try again later！')
+
+          })
       },
 
     handleAvatarSuccess(res, file) {

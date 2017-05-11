@@ -14,6 +14,15 @@ const getUserById = async function (data) { // 注意是function* 而不是funct
   return userInfo // 返回数据
 }
 
+const getUserInList = async function(data) {
+  const result = await User.findAll({
+    where: {
+      uid: {'$in': data.userArray}
+    }
+  });
+  return result;
+}
+
 const loginUserByName = async function (data){
   const userInfo = await User.findOne({
     where: {
@@ -60,5 +69,6 @@ module.exports = {
   loginUserByName,
   getUserByName,
   createNewUser,
-  updateUserInfo
+  updateUserInfo,
+  getUserInList
 }

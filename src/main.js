@@ -17,7 +17,7 @@ Vue.use(VueSession)
 const router = VueRouter
 
 router.beforeEach((to,from,next) =>{
-  const token = sessionStorage.getItem('demo-token');
+  const token = localStorage.getItem('demo-token');
   if(to.path == '/'){ // 如果是跳转到登录页的
     if(token != null){
       next() // 如果有token就转向todolist不返回登录页

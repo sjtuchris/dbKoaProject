@@ -114,9 +114,8 @@ import SideBar       from '../common/side-bar'
 export default {
   name: 'post-project',
   created(){ // 组件创建时调用
-    let obj = {pname: this.$route.params.pid};
+    let obj = {pid: this.$route.params.pid};
     const pro = this.getProject(obj); // 新增一个获取project的方法
-    
 
   },
 	data() {
@@ -150,37 +149,35 @@ export default {
   methods: {
     submitForm(formName) {
 
-		    let obj = {
-          pid: this.project[0].pid,
-	        pname: this.project[0].pname,
-	        pdescription: this.project[0].pdescription,
-	        pownid: sessionStorage.getItem('id'),
-	        min_amount: this.project[0].min_amount,
-	        max_amount: this.project[0].max_amount,
-	        fund_endtime: (this.ruleForm.date1==null) ? this.project[0].fund_endtime: this.ruleForm.date1,
-	        ppic: (this.pic==null) ? this.project[0].ppic : this.pic,
-	        pstatus: 'active'
-	      }
-	      console.log(obj)
-				this.$http.post('/api/project/updateProject', obj) // 将信息发送给后端
-			        .then((res) => {
-			          console.log(res);
-				        if(res.data.success){ // 如果成功
-				            
-				            this.$message({ // 登录成功，显示提示语
-				              type: 'success',
-				              message: 'Modified successfully！'
-				            });
-				            alert('submit!');
+	    let obj = {
+      	pid: this.project[0].pid,
+        pname: this.project[0].pname,
+        pdescription: this.project[0].pdescription,
+        pownid: localStorage.getItem('id'),
+        min_amount: this.project[0].min_amount,
+        max_amount: this.project[0].max_amount,
+        fund_endtime: (this.ruleForm.date1==null) ? this.project[0].fund_endtime: this.ruleForm.date1,
+        ppic: (this.pic==null) ? this.project[0].ppic : this.pic,
+        pstatus: 'active'
+      }
+			this.$http.post('/api/project/updateProject', obj) // 将信息发送给后端
+			  .then((res) => {
+	        if(res.data.success){ // 如果成功
+	            
+            this.$message({ // 登录成功，显示提示语
+              type: 'success',
+              message: 'Modified successfully！'
+            });
+            alert('submit!');
 
-				            this.$router.push('/projectview') 
-								}else{
-				            this.$message.error(res.data.info); // 
-				          }
-				        }, (err) => {
-				            this.$message.error('Oops, try again later！')
+            this.$router.push('/projectview') 
+					}else{
+	            this.$message.error(res.data.info); // 
+	          }
+	        }, (err) => {
+	           this.$message.error('Oops, try again later！')
 
-						})
+				})
 
       },
       resetForm(formName) {
@@ -206,6 +203,7 @@ export default {
             if(res.data == []){
               this.$router.push('/projectview')
             }
+            console.log(res.data);
             this.project=res.data
             this.releasedays=new Date(res.data[0].postime)
 

@@ -29,7 +29,8 @@
 <script>
 export default {
   created(){ // 组件创建时调用
-    if(sessionStorage.getItem('demo-token') != null){
+    console.log(localStorage.getItem('demo-token'))
+    if(localStorage.getItem('demo-token') != null){
       this.$router.push('/projectview')
     }
   },
@@ -49,19 +50,21 @@ export default {
         .then((res) => {
           console.log(res.data);
           if(res.data.success){ // 如果成功
-            sessionStorage.setItem('demo-token',res.data.token);
-            sessionStorage.setItem('name',res.data.name);
-            sessionStorage.setItem('id',res.data.id) // 用sessionStorage把token存下来
+            localStorage.setItem('demo-token',res.data.token);
+            localStorage.setItem('demo-token',res.data.token);
 
-            let nameobj={uname: sessionStorage.getItem('name')}
+            localStorage.setItem('name',res.data.name);
+            localStorage.setItem('id',res.data.id) // 用localStorage把token存下来
+
+            let nameobj={uname: localStorage.getItem('name')}
 
               this.$http.post('/api/user/info', nameobj) // 将信息发送给后端
                 .then((res) => {
                   // console.log(res);
-                  sessionStorage.setItem('email',res.data.uemail);
-                  sessionStorage.setItem('city',res.data.ucity);
-                  sessionStorage.setItem('occupation',res.data.uoccupation);
-                  sessionStorage.setItem('picurl',res.data.upic);
+                  localStorage.setItem('email',res.data.uemail);
+                  localStorage.setItem('city',res.data.ucity);
+                  localStorage.setItem('occupation',res.data.uoccupation);
+                  localStorage.setItem('picurl',res.data.upic);
 
                 })
 
@@ -72,15 +75,15 @@ export default {
             this.$router.push('/projectview') // 进入todolist页面，登录成功
           }else{
             this.$message.error(res.data.info); // 登录失败，显示提示语
-            sessionStorage.setItem('demo-token',null); // 将token清空
-            sessionStorage.setItem('name',null); // 将token清空
-            sessionStorage.setItem('id',null);
+            localStorage.setItem('demo-token',null); // 将token清空
+            localStorage.setItem('name',null); // 将token清空
+            localStorage.setItem('id',null);
           }
         }, (err) => {
             this.$message.error('Oops, try again later！')
-            sessionStorage.setItem('demo-token',null); // 将token清空
-            sessionStorage.setItem('name',null); // 将token清空
-            sessionStorage.setItem('id',null);
+            localStorage.setItem('demo-token',null); // 将token清空
+            localStorage.setItem('name',null); // 将token清空
+            localStorage.setItem('id',null);
 
         })
     },

@@ -75,8 +75,6 @@ CREATE TABLE `Comments` (
   `uid` INT NOT NULL,
   `pid` INT NOT NULL,
   `ccontent` VARCHAR(1000) NOT NULL,
-  `like_amount` INT,
-  `unlike_amount` INT,
   `ctime` DATETIME NOT NULL DEFAULT current_timestamp,
   PRIMARY KEY (`uid`,`pid`,`ctime`),
   FOREIGN KEY (`uid`) REFERENCES `Customers` (`uid`),
@@ -87,7 +85,7 @@ CREATE TABLE `Comments` (
 CREATE TABLE `Rates` (
   `uid` INT NOT NULL,
   `pid` INT NOT NULL,
-  `rpoint` INT NOT NULL,
+  `rpoint` NUMERIC(2,1) NOT NULL,
   `ratime` timestamp NOT NULL DEFAULT current_timestamp,
   PRIMARY KEY (`uid`,`pid`),
   FOREIGN KEY (`uid`) REFERENCES `Customers` (`uid`),
@@ -150,7 +148,7 @@ CREATE TABLE `Messages` (
 CREATE TABLE `Like` (
   uid INT NOT NULL,
   pid INT NOT NULL,
-  `like`VARCHAR(40) NOT NULL,
+  `like_dislike`VARCHAR(40) NOT NULL,
   PRIMARY KEY (uid, pid),
   FOREIGN KEY (uid) REFERENCES Customers(uid),
   FOREIGN KEY (pid) REFERENCES `Projects`(`pid`));

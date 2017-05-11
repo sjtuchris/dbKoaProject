@@ -1,4 +1,5 @@
 const follow = require('../models/follow.js');
+const customer = require('../models/customer.js');
 
 const followSomeone = async function(ctx) {
 	const data = ctx.request.body;
@@ -39,7 +40,21 @@ const cancelFollow = async function(ctx) {
 const getFollowList = async function(ctx) {
 	const data = ctx.request.body;
 	const lists = await follow.getFollowList(data);
-	ctx.body = lists;
+	let temp = [];
+	if (data.uid) {
+		for (let i = 0; i < lists.length; i++) {
+			temp[i] = lists[i].followid;
+		}
+	} else if (data.followid) {
+		for (let i = 0; i < lists.length; i++) {
+			temp[i] = lists[i].uid;
+		}
+	}
+	const users = await customer.getUserInList({userArray: temp});
+	ctx.body = {
+		tuples: lists,
+		users: users
+	};
 	console.log(lists);
 }
 

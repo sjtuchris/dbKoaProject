@@ -2,27 +2,41 @@
   <div>
     <nav-bar></nav-bar>
     <el-carousel :interval="4000" type="card" height="200px">
-      <el-carousel-item v-for="item in [projectgroup[projectgroup.length-1],projectgroup[projectgroup.length-2],projectgroup[projectgroup.length-3],projectgroup[projectgroup.length-4]]" :key="item">
+      <el-carousel-item v-for="item in [topprojectgroup[topprojectgroup.length-1],topprojectgroup[topprojectgroup.length-2],topprojectgroup[topprojectgroup.length-3],topprojectgroup[topprojectgroup.length-4]]" :key="item">
         <h3><router-link :to="'/projectdetail'+'/'+item.pname"><img :src="item.ppic" width="20%"></router-link></h3>
       </el-carousel-item>
     </el-carousel>
     <el-row class="cardgroup" :gutter="24">
       <el-col :span="20">
+        <div v-if="projectgroup[0]==null">
+          <img src="https://speckycdn-sdm.netdna-ssl.com/wp-content/uploads/2011/05/notfound.jpg">
+          <!-- <span>Nothing found... Try another keyword.</span> -->
+        </div>
+        <div v-else>
         <el-col class="card" :span="5" v-for="(pro, index) in projectgroup" :key="pro" :offset="index > 0 ? 1 : 1">
-        
-          <el-card :body-style="{ padding: '10px' }">
+          
+          <el-card :body-style="{ padding: '10px' }" class="cardbody">
             <router-link :to="'/projectdetail'+'/'+pro.pname">
               <img :src="pro.ppic" class="image">
+            </router-link>
+
+              
               <div style="padding: 14px;">
-                <span>{{pro.pname}}</span>
+                <el-row>
+                  <span>{{pro.pname}}</span>
+                </el-row>
+                <el-row><span>Status: {{pro.pstatus}}</span></el-row>
+
                 <div class="bottom clearfix">
                   <time class="time">released at {{ (new Date(pro.postime).getMonth()+1) + '/' +new Date(pro.postime).getDate() + '/' + new Date(pro.postime).getFullYear() }}</time>
-                  <el-button type="text" class="button">Detail</el-button>
+                  <router-link :to="'/projectdetail'+'/'+pro.pname">
+                    <el-button type="text" class="button">Detail</el-button>
+                  </router-link>
                 </div>
               </div>
-            </router-link>
           </el-card>
         </el-col>
+        </div>
       </el-col>
       <el-col :span="4">
         <side-bar></side-bar>
@@ -37,7 +51,8 @@ import SideBar       from '../common/side-bar'
 export default {
   name: 'Project-view',
   created(){ // 组件创建时调用
-    let obj = {};
+    console.log(localStorage.getItem('demo-token'))
+    let obj = (this.$route.params.keyword!=null) ? {keywordOfPname: this.$route.params.keyword}:{};
     const proGroup = this.getProjectGroup(obj); // 新增一个获取project的方法
     if(proGroup != null){
       this.projectgroup = proGroup;
@@ -48,9 +63,16 @@ export default {
   },
   data () {
     return {
+      value5: 0.0,
       currentDate: new Date(),
-      projectgroup: []
-
+      projectgroup: [],
+      topprojectgroup: [],
+      like: []
+    }
+  },
+  watch: {
+    like (){
+      console.log()
     }
   },
   methods: {
@@ -64,6 +86,15 @@ export default {
                 this.$message.error('Oops, try again later！')
 
         })
+        this.$http.post('/api/project/getProjects', {}) // Top project
+          .then((res) => {
+            console.log(res.data);
+            this.topprojectgroup=res.data
+          
+            }, (err) => {
+                this.$message.error('Oops, try again later！')
+
+        })
       },
 
       handleOpen(key, keyPath) {
@@ -71,7 +102,17 @@ export default {
       },
       handleClose(key, keyPath) {
         console.log(key, keyPath);
+      },
+      log(string){
+
+        console.log(localStorage.getItem('id'))
+        this.$http.post('/api/log/create', {uid: localStorage.getItem('id'),lcontent: string, ltype: 'history'})
+        .then((res) => {
+            console.log(res.data);})
       }
+      
+      
+
   },
 
   components:{
@@ -110,8 +151,12 @@ export default {
     margin-right:0%
   }
   .card {
-    //width: 25%
+    width: 20%
+    height: 320px
     margin-bottom: 2%
+  }
+  .cardbody{
+    height: 320px
   }
   .time {
     font-size: 13px;
@@ -141,6 +186,7 @@ export default {
       display: table;
       content: "";
   }
+ 
   
   .clearfix:after {
       clear: both

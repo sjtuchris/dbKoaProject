@@ -38,7 +38,7 @@
 				    </el-col>
 				  </el-form-item>
 
-				  <el-form-item label="Expected Release Time" required>
+				  <el-form-item label="Expected Release Time">
             <el-col :span="11">
               <el-form-item prop="">
                 <el-date-picker type="date" placeholder="Choose Date"  style="width: 100%;"></el-date-picker>
@@ -175,7 +175,7 @@ export default {
 		    let obj = {
 	        pname: this.ruleForm.name,
 	        pdescription: this.ruleForm.desc,
-	        pownid: sessionStorage.getItem('id'),
+	        pownid: localStorage.getItem('id'),
 	        min_amount: this.ruleForm.min_amount,
 	        max_amount: this.ruleForm.max_amount,
 	        fund_endtime: this.ruleForm.date1,
@@ -188,6 +188,8 @@ export default {
 			          console.log(res);
 				        if(res.data.success){ // 如果成功
 				            
+                  
+
 				            this.$message({ // 登录成功，显示提示语
 				              type: 'success',
 				              message: 'Posted successfully！'
@@ -227,7 +229,7 @@ export default {
         console.log(this.pic);
 
         // let urlobj = {
-        //   "thisname": sessionStorage.getItem('name'),
+        //   "thisname": localStorage.getItem('name'),
         //   "upic": res.data.pictureUrl
         // }
         // this.$http.post('/api/user/update', urlobj)

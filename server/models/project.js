@@ -15,9 +15,9 @@ const getProjects = async function(data) {
 			postime: data.postime ? data.postime : {
 				'$between': [new Date(data.fromPosttime ? data.fromPosttime : "2010-01-01 00:00:00"), new Date(data.toPosttime ? data.toPosttime : "2200-01-01 00:00:00")]
 			},
-			ptotalfinal: data.ptotalfinal ? data.ptotalfinal : ((data.lowerPtotalfinal || data.upperPtotalfinal) ? {
-			 	'$between': [data.lowerPtotalfinal ? data.lowerPtotalfinal : 0, data.upperPtotalfinal ? data.upperPtotalfinal : Number.MAX_VALUE]
-			} : null),
+			// ptotalfinal: data.ptotalfinal ? data.ptotalfinal : ((data.lowerPtotalfinal || data.upperPtotalfinal) ? {
+			//  	'$between': [data.lowerPtotalfinal ? data.lowerPtotalfinal : 0, data.upperPtotalfinal ? data.upperPtotalfinal : Number.MAX_VALUE]
+			// } : null),
 			min_amount: data.min_amount ? data.min_amount : {
 				'$between': [data.lowerMin_Amount ? data.lowerMin_Amount : 0, data.upperMin_Amount ? data.upperMin_Amount : Number.MAX_VALUE]
 			},
