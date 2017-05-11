@@ -313,7 +313,7 @@ export default {
               this.$message({ // 登录成功，显示提示语
                 type: 'success',
                 message: 'Rate successfully！'
-              })};              
+              })}             
             }, (err) => {
                   this.$message.error('Oops, try again later！')
 

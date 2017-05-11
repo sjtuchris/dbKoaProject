@@ -4,7 +4,7 @@
     <el-row class="postframe">
       <div class="panel-group">
         <div class="panel panel-primary">
-          <div class="panel-heading">Post Your Project</div>
+          <div class="panel-heading">Pledge Project</div>
           <div class="panel panel-default">
             <div class="panel-body">
 

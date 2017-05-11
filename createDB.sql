@@ -153,6 +153,14 @@ CREATE TABLE `Like` (
   FOREIGN KEY (uid) REFERENCES Customers(uid),
   FOREIGN KEY (pid) REFERENCES `Projects`(`pid`));
 
+CREATE TABLE Log (
+  uid INT NOT NULL,
+  lcontent VARCHAR(1000) NOT NULL,
+  ltype VARCHAR(40) NOT NULL,
+  ltime DATETIME NOT NULL DEFAULT current_timestamp,
+  PRIMARY KEY (uid, ltime),
+  FOREIGN KEY (uid) REFERENCES Customers(uid));
+
 
 ####################################################################
 ###################          Triggers           ####################
@@ -341,3 +349,11 @@ CREATE EVENT deletetag
     DELETE FROM Tags
       WHERE tname NOT IN (SELECT tname FROM Interest)
             AND tname NOT IN (SELECT tname FROM Project_type);
+
+CREATE EVENT deletelog
+  ON SCHEDULE EVERY 7 DAY
+  STARTS current_date
+  COMMENT 'Delete the redundant tuples in Log'
+  DO
+    DELETE FROM Log
+      WHERE day(ltime) - day(current_date) > 7;
